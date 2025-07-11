@@ -29,16 +29,6 @@ public class Ticket {
     private LocalDate travelDate;
 
     @JsonManagedReference("tick")
-    @OneToMany(mappedBy = "ticket", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
     private List<Passenger> passengers = new ArrayList<>();
-
-    public void addPassenger(Passenger passenger) {
-        passengers.add(passenger);
-        passenger.setTicket(this);
-    }
-
-    public void removePassenger(Passenger passenger) {
-        passengers.remove(passenger);
-        passenger.setTicket(null);
-    }
 }

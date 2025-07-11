@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PassengerRepository extends JpaRepository<Passenger, Long> {
 
-    boolean existByAadharNumber(String aadharNumber);
+    boolean existsByAadharNumber(String aadharNumber);
 }

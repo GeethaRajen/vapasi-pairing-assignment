@@ -8,9 +8,9 @@ public interface TicketService {
 
     public Ticket createTicket(Ticket ticket);
 
-    public Ticket get(long pnr);
+    public Ticket getTicketByPnr(long pnr);
 
     public List<Ticket> getAllTickets();
 
-    public void delete(long pnr);
+    public void deleteTicket(long pnr);
 }

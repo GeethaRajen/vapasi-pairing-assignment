@@ -20,7 +20,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket get(long pnr) {
+    public Ticket getTicketByPnr(long pnr) {
         return ticketRepository.findById(pnr).orElseThrow(
                 () -> new EntityNotFoundException("Ticket with id " + pnr + " not found")
         );
@@ -32,10 +32,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void delete(long pnr) {
-        Ticket ticket = ticketRepository.findById(pnr).orElseThrow(
-                () -> new EntityNotFoundException("Ticket with id " + pnr + " not found")
-        );
+    public void deleteTicket(long pnr) {
+        Ticket ticket = getTicketByPnr(pnr);
         ticketRepository.delete(ticket);
     }
 }
