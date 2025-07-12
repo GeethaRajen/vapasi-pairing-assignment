@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface TicketService {
 
-    public Ticket createTicket(Ticket ticket);
+    Ticket createTicket(Ticket ticket);
 
-    public Ticket getTicketByPnr(long pnr);
+    Ticket getTicketByPnr(long pnr);
 
-    public List<Ticket> getAllTickets();
+    void deleteTicket(long pnr);
 
-    public void deleteTicket(long pnr);
+    List<Ticket> getAllTicketsByLimit(int offset, int limit);
 }

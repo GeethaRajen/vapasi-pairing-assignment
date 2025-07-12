@@ -1,9 +1,11 @@
 package com.tw.service;
 
+import com.tw.entity.Passenger;
 import com.tw.entity.Ticket;
+import com.tw.exception.TicketNotCreatedException;
 import com.tw.repository.TicketRepository;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,29 +13,40 @@ import java.util.List;
 @Service
 public class TicketServiceImpl implements TicketService {
 
-    @Autowired
-    private TicketRepository ticketRepository;
+    private final TicketRepository ticketRepository;
+    private final MediatorService mediatorService;
+
+    public TicketServiceImpl(TicketRepository ticketRepository, MediatorService mediatorService) {
+        this.ticketRepository = ticketRepository;
+        this.mediatorService = mediatorService;
+    }
 
     @Override
     public Ticket createTicket(Ticket ticket) {
+        List<Passenger> passengersList = ticket.getPassengers();
+        for (Passenger passenger : passengersList) {
+            List<Passenger> duplicateList = mediatorService.getPassengersByAadharTravelDate(passenger.getAadharNumber(), ticket.getTravelDate());
+            if (!duplicateList.isEmpty()) {
+                throw new TicketNotCreatedException("Cannot book ticket for passenger " + passenger.getName()
+                        + " as ticket already exists for the given date! ");
+            }
+        }
         return ticketRepository.save(ticket);
     }
 
     @Override
     public Ticket getTicketByPnr(long pnr) {
-        return ticketRepository.findById(pnr).orElseThrow(
-                () -> new EntityNotFoundException("Ticket with id " + pnr + " not found")
-        );
-    }
-
-    @Override
-    public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+        return mediatorService.getTicketByPnr(pnr);
     }
 
     @Override
     public void deleteTicket(long pnr) {
-        Ticket ticket = getTicketByPnr(pnr);
-        ticketRepository.delete(ticket);
+        mediatorService.deleteTicket(pnr);
+    }
+
+    @Override
+    public List<Ticket> getAllTicketsByLimit(int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        return ticketRepository.findAll(pageable).getContent();
     }
 }

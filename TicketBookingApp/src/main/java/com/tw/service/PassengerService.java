@@ -3,11 +3,16 @@ package com.tw.service;
 import com.tw.entity.Passenger;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+import java.util.List;
+
 public interface PassengerService {
 
-    public Passenger addPassenger(long pnr, Passenger passenger);
+    Passenger addPassenger(long pnr, Passenger passenger);
 
-    public void removePassenger(long pnr, long pid);
+    boolean removePassenger(long pnr, long pid);
 
-    public Page<Passenger> getAllPassengers(long pnr, int page, int size);
+    Page<Passenger> getAllPassengers(long pnr, int page, int size);
+
+    List<Passenger> getPassengersByAadharTravelDate(String aadhar, LocalDate travelDate);
 }
