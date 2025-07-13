@@ -3,12 +3,16 @@ package com.tw.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "passengers")
 public class Passenger {
 
@@ -51,4 +55,5 @@ public class Passenger {
                 ", ticket=" + ticket.getPnr() +
                 '}';
     }
+
 }

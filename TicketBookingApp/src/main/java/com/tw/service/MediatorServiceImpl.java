@@ -16,21 +16,20 @@ public class MediatorServiceImpl implements MediatorService {
     private final PassengerRepository passengerRepository;
     private final TicketRepository ticketRepository;
 
-    public MediatorServiceImpl(PassengerRepository passengerRepository, TicketRepository ticketRepository){
+    public MediatorServiceImpl(PassengerRepository passengerRepository, TicketRepository ticketRepository) {
         this.passengerRepository = passengerRepository;
         this.ticketRepository = ticketRepository;
     }
 
     @Override
     public List<Passenger> getPassengersByAadharTravelDate(String aadhar, LocalDate travelDate) {
-        return passengerRepository.findPassengersByAadharNumberAndTicketTravelDate(aadhar,travelDate);
+        return passengerRepository.findPassengersByAadharNumberAndTicketTravelDate(aadhar, travelDate);
     }
 
     @Override
     public void deleteTicket(long pnr) {
         ticketRepository.deleteById(pnr);
     }
-
 
     @Override
     public Ticket getTicketByPnr(long pnr) {

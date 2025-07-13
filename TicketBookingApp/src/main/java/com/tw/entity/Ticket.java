@@ -4,13 +4,18 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tw.util.AppConstants;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "tickets")
 public class Ticket {
@@ -37,5 +42,5 @@ public class Ticket {
             message = "A ticket can have only " + AppConstants.MAX_PASSENGERS + " passengers")
     @JsonManagedReference("tick")
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<Passenger> passengers = new ArrayList<>();
+    private List<Passenger> passengers;
 }

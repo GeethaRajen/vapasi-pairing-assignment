@@ -41,6 +41,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void deleteTicket(long pnr) {
+
         mediatorService.deleteTicket(pnr);
     }
 

@@ -21,7 +21,7 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
+    @PostMapping(value = "/add", produces = "application/json", consumes = "application/json")
     public ResponseEntity<Ticket> createTicket(@Valid @RequestBody Ticket ticket) {
         LOGGER.info("Received request to create a new ticket");
         return new ResponseEntity<>(ticketService.createTicket(ticket), HttpStatus.CREATED);
@@ -33,7 +33,7 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.getTicketByPnr(pnr), HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping("/all")
     public ResponseEntity<List<Ticket>> getAllTickets(@RequestParam(defaultValue = "0") int page,
                                                       @RequestParam(defaultValue = "10") int size) {
         LOGGER.info("Received request to get all tickets with page " + page + " and size " + size);
