@@ -3,13 +3,16 @@ package com.tw.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
 @Data
+@Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,6 +32,8 @@ public class Passenger {
 
     private int age;
 
+    @NotBlank
+    @Size(min = 12, max = 12, message = "Aadhaar Number should be of length 12")
     @Column(name = "aadhaar_number", nullable = false, length = 12)
     private String aadharNumber;
 
@@ -52,7 +57,6 @@ public class Passenger {
                 ", gender='" + gender + '\'' +
                 ", age=" + age +
                 ", aadharNumber='" + aadharNumber + '\'' +
-                ", ticket=" + ticket.getPnr() +
                 '}';
     }
 

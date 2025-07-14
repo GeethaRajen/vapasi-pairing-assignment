@@ -8,14 +8,13 @@ import com.tw.exception.PassengerNotFoundException;
 import com.tw.repository.PassengerRepository;
 import com.tw.util.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
@@ -35,9 +34,10 @@ public class PassengerServiceImpl implements PassengerService {
         this.mediatorService = mediatorService;
     }
 
+    @Transactional
     @Override
-    public Passenger addPassenger(long pnr, Passenger passenger) {
-
+    public Passenger addPassenger(Long pnr, Passenger passenger) {
+        LOGGER.log(Level.FINE,"Adding passenger...");
         Ticket ticket = mediatorService.getTicketByPnr(pnr);
         List<Passenger> passengersList = ticket.getPassengers();
         if (passengersList.size() >= AppConstants.MAX_PASSENGERS) {
@@ -54,7 +54,9 @@ public class PassengerServiceImpl implements PassengerService {
         }
 
         passenger.setTicket(ticket);
-        return passengerRepository.save(passenger);
+        Passenger createdPassenger = passengerRepository.save(passenger);
+        LOGGER.log(Level.FINE,"Passenger created successfully with id "+createdPassenger.getPid());
+        return createdPassenger;
     }
 
     @Override
@@ -62,40 +64,42 @@ public class PassengerServiceImpl implements PassengerService {
         return mediatorService.getPassengersByAadharTravelDate(aadhar, travelDate);
     }
 
+    @Transactional
     @Override
-    public boolean removePassenger(long pnr, long pid) {
+    public boolean removePassenger(Long pnr, Long passengerId) {
 
         boolean shouldDeleteTicket = false;
-        Ticket ticket = mediatorService.getTicketByPnr(pnr);
-        LOGGER.info("Ticket with pnr " + pnr + " ticket : " + ticket);
-        if (ticket.getPassengers().size() == AppConstants.MIN_PASSENGERS) {
+        boolean isPassengerPresent = false;
+        Passenger removePassenger = null;
+
+        List<Passenger> passengers = passengerRepository.findPassengersByTicket_Pnr(pnr);
+        if (passengers.size() == AppConstants.MIN_PASSENGERS) {
             shouldDeleteTicket = true;
         }
-        Passenger passenger = passengerRepository.findById(pid).orElseThrow(
-                () -> new PassengerNotFoundException("Passenger not found with ID: " + pid)
-        );
-        LOGGER.info("passenger : " + passenger);
-        if (!Objects.equals(passenger.getTicket().getPnr(), ticket.getPnr())) {
-            LOGGER.info(String.valueOf(Objects.equals(passenger.getTicket().getPnr(), ticket.getPnr())));
-            throw new PassengerNotFoundException("Passenger does not belong to the ticket with PNR: " + pnr);
-        }
-        passengerRepository.deleteById(passenger.getPid());
 
-        LOGGER.info("shouldDeleteTicket ? " + shouldDeleteTicket);
+        for(Passenger existingPassenger: passengers) {
+            if(existingPassenger.getPid() == passengerId){
+                isPassengerPresent = true;
+                removePassenger = existingPassenger;
+            }
+        }
+        if(!isPassengerPresent) {
+            throw new PassengerNotFoundException("Passenger not found with ID: " + passengerId);
+        }
+
+        LOGGER.log(Level.FINE,"Passenger to be deleted: " + removePassenger);
+        passengerRepository.delete(removePassenger);
+
         if (shouldDeleteTicket) {
             mediatorService.deleteTicket(pnr);
+            LOGGER.log(Level.FINE,"Ticket deleted successfully");
         }
         return shouldDeleteTicket;
     }
 
     @Override
-    public Page<Passenger> getAllPassengers(long pnr, int page, int size) {
-        Ticket ticket = mediatorService.getTicketByPnr(pnr);
-        List<Passenger> passengers = ticket.getPassengers();
-        int start = page * size;
-        int end = Math.min((start + size), passengers.size());
-
-        List<Passenger> pageList = passengers.subList(start, end);
-        return new PageImpl<>(pageList, PageRequest.of(page, size), passengers.size());
+    public Page<Passenger> getAllPassengers(Long pnr, int page, int size) {
+         Pageable pageable = PageRequest.of(page, size);
+         return passengerRepository.findPassengersByTicket_Pnr(pnr, pageable);
     }
 }

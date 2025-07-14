@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface PassengerService {
 
-    Passenger addPassenger(long pnr, Passenger passenger);
+    Passenger addPassenger(Long pnr, Passenger passenger);
 
-    boolean removePassenger(long pnr, long pid);
+    boolean removePassenger(Long pnr, Long pid);
 
-    Page<Passenger> getAllPassengers(long pnr, int page, int size);
+    Page<Passenger> getAllPassengers(Long pnr, int page, int size);
 
     List<Passenger> getPassengersByAadharTravelDate(String aadhar, LocalDate travelDate);
 }

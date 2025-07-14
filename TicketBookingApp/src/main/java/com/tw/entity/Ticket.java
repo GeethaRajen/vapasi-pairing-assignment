@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -42,5 +43,5 @@ public class Ticket {
             message = "A ticket can have only " + AppConstants.MAX_PASSENGERS + " passengers")
     @JsonManagedReference("tick")
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL)
-    private List<Passenger> passengers;
+    private List<Passenger> passengers = new ArrayList<>();
 }

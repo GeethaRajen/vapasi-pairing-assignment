@@ -2,6 +2,7 @@ package com.tw.controller;
 
 import com.tw.entity.Ticket;
 import com.tw.service.TicketService;
+import com.tw.util.AppConstants;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,8 +35,8 @@ public class TicketController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Ticket>> getAllTickets(@RequestParam(defaultValue = "0") int page,
-                                                      @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<Ticket>> getAllTickets(@RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO) int page,
+                                                      @RequestParam(defaultValue = AppConstants.DEFAULT_RESULT_COUNT) int size) {
         LOGGER.info("Received request to get all tickets with page " + page + " and size " + size);
         return new ResponseEntity<>(ticketService.getAllTicketsByLimit(page, size), HttpStatus.OK);
     }

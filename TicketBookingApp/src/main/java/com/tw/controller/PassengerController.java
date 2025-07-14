@@ -2,6 +2,8 @@ package com.tw.controller;
 
 import com.tw.entity.Passenger;
 import com.tw.service.PassengerService;
+import com.tw.util.AppConstants;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,9 @@ public class PassengerController {
     }
 
     @PostMapping("/{pnr}")
-    public ResponseEntity<Passenger> addPassenger(@PathVariable long pnr, @RequestBody Passenger passenger) {
+    public ResponseEntity<Passenger> addPassenger(@PathVariable long pnr, @Valid @RequestBody Passenger passenger) {
         LOGGER.info("Adding passenger to ticket " + pnr);
-        return new ResponseEntity<>(passengerService.addPassenger(pnr, passenger), HttpStatus.OK);
+        return new ResponseEntity<>(passengerService.addPassenger(pnr, passenger), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{pid}/ticket/{pnr}")
@@ -40,8 +42,8 @@ public class PassengerController {
 
     @GetMapping("/{pnr}")
     public ResponseEntity<Page<Passenger>> getAllPassengers(@PathVariable long pnr,
-                                                            @RequestParam(defaultValue = "0") int page,
-                                                            @RequestParam(defaultValue = "5") int size) {
+                                                            @RequestParam(defaultValue = AppConstants.DEFAULT_PAGE_NO) int page,
+                                                            @RequestParam(defaultValue = AppConstants.DEFAULT_RESULT_COUNT) int size) {
         LOGGER.info("Retrieve all passengers in the ticket " + pnr);
         return new ResponseEntity<>(passengerService.getAllPassengers(pnr, page, size), HttpStatus.OK);
     }
