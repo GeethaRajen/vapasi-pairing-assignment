@@ -1,0 +1,220 @@
+type: collection.insomnia.rest/5.0
+name: Ticket Booking
+meta:
+  id: wrk_c4704d1e2feb42e99c2f7deee1431a97
+  created: 1752037870795
+  modified: 1752570270082
+  description: ""
+collection:
+  - url: http://localhost:8989/tickets/v1/add
+    name: Create Ticket
+    meta:
+      id: req_9c1c52fc977d4eee9897e6b8ed14d4a5
+      created: 1752037870814
+      modified: 1752575653139
+      isPrivate: false
+      description: ""
+      sortKey: -1752037870814
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "source": "Chennai",
+          "destination": "Bangalore",
+          "travelDate": "2025-07-15",
+          "passengers": [
+            {
+              "name": "Jagan",
+              "gender": "Male",
+              "age": 10,
+              "aadharNumber": "987654321098"
+            }
+          ]
+        }
+    parameters:
+      - id: pair_a26fe361e2a6495d9e4e70826f86fc35
+        name: ""
+        value: ""
+        description: ""
+        disabled: true
+    headers:
+      - id: pair_a98f9e8415fe402f82b92b50658a77c9
+        name: Content-type
+        value: application/json
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8989/tickets/v1/all
+    name: Get All Tickets
+    meta:
+      id: req_d51b45a61d1a4a8ab35dfade312cda87
+      created: 1752142452151
+      modified: 1752575626779
+      isPrivate: false
+      description: ""
+      sortKey: -1752142452151
+    method: GET
+    body:
+      mimeType: application/json
+      text: ""
+    parameters:
+      - id: pair_ae8030fc47fe4905b09916fec445ef4f
+        name: page
+        value: "0"
+        description: ""
+        disabled: false
+      - id: pair_1e8d6f3a0f3c4155aa16bddb361435ec
+        name: size
+        value: "10"
+        description: ""
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.2.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8989/tickets/v1/9
+    name: Get Ticket
+    meta:
+      id: req_adfe1100343b40f68f3b2b58d1e651d4
+      created: 1752574614283
+      modified: 1752574733161
+      isPrivate: false
+      description: ""
+      sortKey: -1752574614283
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.3.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8989/tickets/v1/17
+    name: Delete  Ticket
+    meta:
+      id: req_87f74e53043447e08c8ea196555a44f9
+      created: 1752574760406
+      modified: 1752574805600
+      isPrivate: false
+      description: ""
+      sortKey: -1752574760406
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/11.3.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8989/passengers/v1/9
+    name: Get Passengers
+    meta:
+      id: req_6ec77502ea144239b0fee643991bf13a
+      created: 1752574820684
+      modified: 1752574861244
+      isPrivate: false
+      description: ""
+      sortKey: -1752574820684
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.3.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8989/passengers/v1/9
+    name: Create Passenger
+    meta:
+      id: req_6839fc0ea9ec404a937cef0141b839da
+      created: 1752575325992
+      modified: 1752575552938
+      isPrivate: false
+      description: ""
+      sortKey: -1752575325992
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "name": "Ram",
+          "gender": "Male",
+          "age": 1073741824,
+          "aadharNumber": "987654321012"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.3.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: localhost:8989/passengers/v1/80/ticket/9
+    name: Delete Passenger
+    meta:
+      id: req_5c60b9775fc04e509f0e47a7eede23c7
+      created: 1752575584725
+      modified: 1752575712427
+      isPrivate: false
+      description: ""
+      sortKey: -1752575584725
+    method: DELETE
+    headers:
+      - name: User-Agent
+        value: insomnia/11.3.0
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_3325cb07735dce07231fd3e844dc96e4282066fe
+    created: 1752037870797
+    modified: 1752037870797
+environments:
+  name: Base Environment
+  meta:
+    id: env_3325cb07735dce07231fd3e844dc96e4282066fe
+    created: 1752037870797
+    modified: 1752037870797
+    isPrivate: false
