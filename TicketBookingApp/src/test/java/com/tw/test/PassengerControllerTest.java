@@ -114,19 +114,20 @@ public class PassengerControllerTest {
                 );
     }
 
-   /* @Test
+    @Test
     @Order(5)
     public void delete_givenPnrPid_shouldRemove() throws Exception {
         // precondition
-        willDoNothing().given(service).removePassenger(100L, 123L);
+        given(service.removePassenger(100L, 123L)).willReturn(true);
 
         // action
-        ResultActions response = mockMvc.perform(delete("/passengers/v1/{pid}/ticket/{pnr}", 123L, 100L));
+        ResultActions response = mockMvc.perform(
+                delete("/passengers/v1/{pid}/ticket/{pnr}", 123L, 100L));
 
         // verify
         response.andExpect(status().isOk());
         verify(service).removePassenger(100L, 123L);
-    }*/
+    }
 
     @Test
     @Order(6)

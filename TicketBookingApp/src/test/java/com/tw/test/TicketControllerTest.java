@@ -13,12 +13,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
@@ -68,6 +70,58 @@ public class TicketControllerTest {
         response.andExpect(status().isCreated())
                 .andExpect(jsonPath("$.source", is("Pune")))
                 .andExpect(jsonPath("$.destination", is("Delhi")));
+    }
+
+    @Test
+    public void create_TicketWithoutSource_throwsException() throws Exception {
+        ticket1.setSource(null);
+        given(ticketService.createTicket(any(Ticket.class))).willReturn(ticket1);
+        ResultActions response = mockMvc.perform(post("/tickets/v1/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(ticket1)));
+        response.andExpect(status().isBadRequest())
+                .andExpect(result ->
+                        assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException())
+                );
+    }
+
+    @Test
+    public void create_TicketWithoutDestination_throwsException() throws Exception {
+        ticket1.setDestination(null);
+        given(ticketService.createTicket(any(Ticket.class))).willReturn(ticket1);
+        ResultActions response = mockMvc.perform(post("/tickets/v1/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(ticket1)));
+        response.andExpect(status().isBadRequest())
+                .andExpect(result ->
+                        assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException())
+                );
+    }
+
+    @Test
+    public void create_TicketWithoutPassenger_throwsException() throws Exception {
+        ticket1.setPassengers(new ArrayList<>());
+        given(ticketService.createTicket(any(Ticket.class))).willReturn(ticket1);
+        ResultActions response = mockMvc.perform(post("/tickets/v1/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(ticket1)));
+        response.andExpect(status().isBadRequest())
+                .andExpect(result ->
+                        assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException())
+                );
+    }
+
+    @Test
+    public void create_TicketWithoutTravelDate_throwsException() throws Exception {
+        ticket1.setTravelDate(null);
+        given(ticketService.createTicket(any(Ticket.class))).willReturn(ticket1);
+        ResultActions response = mockMvc.perform(post("/tickets/v1/add")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(ticket1)));
+        response.andExpect(status().isBadRequest())
+                .andExpect(result ->
+                        assertInstanceOf(MethodArgumentNotValidException.class, result.getResolvedException())
+                );
     }
 
     @Test
